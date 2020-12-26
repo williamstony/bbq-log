@@ -4,6 +4,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 import dbConnect from '../utils/dbConnect'
 import Cook from '../models/Cook'
 
+import Link from 'next/link'
+
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -77,7 +79,7 @@ function Dashboard({cooks}) {
                                 {cooks?.map(cook => (
                                     <TableRow key={cook._id}>
                                         <TableCell component="th" scope="row">{new Intl.DateTimeFormat('en-US', { timeZone: "America/New_York" }).format(new Date(cook.date))}</TableCell>
-                                        <TableCell>{cook.meatType}</TableCell>
+                                        <TableCell><Link href={`/cooks/${cook._id}`}>{cook.meatType}</Link></TableCell>
                                         <TableCell>{cook.brand}</TableCell>
                                         <TableCell>{cook.rubs}</TableCell>
                                         <TableCell>{cook.woodPellets}</TableCell>
