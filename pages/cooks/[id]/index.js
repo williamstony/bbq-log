@@ -108,30 +108,24 @@ function CookDetail(props) {
             })
     }
 
-    // const saveResults = (e) => {
-    //     e.preventDefault();
-    //     const data = {
-    //         appearance: results.appearance,
-    //         smokeRing: results.smokeRing,
-    //         tenderness: results.tenderness,
-    //         flavor: results.flavor,
-    //         postCookComments: results.postCookComments,
-    //         notesForNextCook: results.notesForNextCook
-    //     }
-    //     postData(`/api/cooks/${id}/edit`, data)
-    //         .then((data) => {
-    //             fetch(`/cooks/${id}`)
-    //                 .then(res => res.json())
-    //                 .then(setCook)
-    //             handleResultsClose()
-    //         }).catch((error) => {
-    //             console.log(error)
-    //         })
-    // }
-
-
     const saveResults = (e) => {
-        return null
+        e.preventDefault();
+        const data = {
+            appearance: results.appearance,
+            smokeRing: results.smokeRing,
+            tenderness: results.tenderness,
+            flavor: results.flavor,
+            postCookComments: results.postCookComments,
+            notesForNextCook: results.notesForNextCook
+        }
+        mutate(`/api/cooks/${router.query.id}`, {...cook, ...data}, false)
+        postData(`/api/cooks/${router.query.id}/edit`, data)
+            .then((data) => {
+                mutate(`/api/cooks/${router.query.id}`)
+                handleResultsClose()
+            }).catch((error) => {
+                console.log(error)
+            })
     }
 
     const handleTabChange = (event, newTabValue) => {
