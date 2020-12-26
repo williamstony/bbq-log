@@ -4,7 +4,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 import dbConnect from '../../../utils/dbConnect';
 import Cook from '../../../models/Cook'
 
-import { withRouter } from 'next/router'
+import { useRouter } from 'next/router'
+import useSWR, { mutate } from 'swr';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -54,9 +55,11 @@ function TabPanel(props) {
     );
 }
 
-function CookDetail({cook}) {
+function CookDetail(props) {
     const theme = useTheme()
     const classes = useStyles();
+    const router = useRouter();
+    const fetcher = url => fetch(url).then(res => res.json())
 
     const [tabValue, setTabValue] = useState(0)
 
@@ -66,7 +69,7 @@ function CookDetail({cook}) {
     const [addLogOpen, setAddLogOpen] = useState(false)
     const [cookLog, setCookLog] = useState({ time: '', currentCookerTemp: 0, currentMeatTemp: 0, airTemp: 0, tempUnits: 'Fahrenheit', ventPercent: 0, addedFuel: false, addedWood: false, addedWater: false, comment: ''})
 
-    // const [cook, setCook] = useState({ meatType: '', brand: '', weight: 0, prep: '', rubs: '', sauceGlaze: '', woodPellets: '', cookerTemp: 0, meatTemp: 0, preCookComments: '', weather: '', date: new Date() })
+    const { data: cook, error } = useSWR(`/api/cooks/${router.query.id}`, fetcher, { initialData: props.cook})
     
 
     async function postData(url = '', data = {}) {
@@ -80,30 +83,30 @@ function CookDetail({cook}) {
         return await response.json()
     }
 
-    // const saveLog = (e) => {
-    //     e.preventDefault();
-    //     const data = {
-    //         time: cookLog.time,
-    //         currentCookerTemp: cookLog.currentCookerTemp,
-    //         currentMeatTemp: cookLog.currentMeatTemp,
-    //         airTemp: cookLog.airTemp,
-    //         tempUnits: cookLog.tempUnits,
-    //         ventPercent: cookLog.ventPercent,
-    //         addedFuel: cookLog.addedFuel,
-    //         addedWood: cookLog.addedWood,
-    //         addedWater: cookLog.addedWater,
-    //         comment: cookLog.comment
-    //     }
-    //     postData(`/api/cooks/${id}/addlog`, data)
-    //         .then((data) => {
-    //             fetch(`/cooks/${id}`)
-    //                 .then(res => res.json())
-    //                 .then(setCook)
-    //             handleLogClose()
-    //         }).catch((error) => {
-    //             console.log(error)
-    //         })
-    // }
+    const saveLog = (e) => {
+        e.preventDefault();
+        const data = {
+            time: cookLog.time,
+            currentCookerTemp: cookLog.currentCookerTemp,
+            currentMeatTemp: cookLog.currentMeatTemp,
+            airTemp: cookLog.airTemp,
+            tempUnits: cookLog.tempUnits,
+            ventPercent: cookLog.ventPercent,
+            addedFuel: cookLog.addedFuel,
+            addedWood: cookLog.addedWood,
+            addedWater: cookLog.addedWater,
+            comment: cookLog.comment
+        }
+        const newLog = cook.cookLog.push(data)
+        mutate(`/api/cooks/${router.query.id}`, {...cook, cooklog: newLog}, false)
+        postData(`/api/cooks/${router.query.id}/addlog`, data)
+            .then((data) => {
+                mutate(`/api/cooks/${router.query.id}`)
+                handleLogClose()
+            }).catch((error) => {
+                console.log(error)
+            })
+    }
 
     // const saveResults = (e) => {
     //     e.preventDefault();
@@ -126,9 +129,6 @@ function CookDetail({cook}) {
     //         })
     // }
 
-    const saveLog = (e) => {
-        return null
-    }
 
     const saveResults = (e) => {
         return null
@@ -356,7 +356,7 @@ export async function getServerSideProps(context){
     const result = await Cook.findById(id)
     const cook = JSON.parse(JSON.stringify(result))
 
-    return {props: {cook:cook}}
+    return {props: {cook}}
 
 }
 
