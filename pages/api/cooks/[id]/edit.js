@@ -1,4 +1,4 @@
-import dbConnect from '../../../utils/dbConnect'
+import dbConnect from '../../../../utils/dbConnect'
 import Cook from '../../../../models/Cook'
 
 export default async function handler(req, res){
