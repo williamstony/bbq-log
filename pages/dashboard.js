@@ -35,12 +35,12 @@ const useStyles = makeStyles(theme => ({
         border: `1px solid ${theme.palette.primary[300]}`
     },
     link: {
-        color: '#FFF',
+        color: theme.palette.primary[300],
         fontWeight: "bold",
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
-            color: '#999'
+            color: '#FFF'
         }
     }
 }))
@@ -81,7 +81,7 @@ function Dashboard({cooks}) {
                                 {cooks?.map(cook => (
                                     <TableRow key={cook._id}>
                                         <TableCell component="th" scope="row">{new Intl.DateTimeFormat('en-US', { timeZone: "America/New_York" }).format(new Date(cook.date))}</TableCell>
-                                        <TableCell><Link href={`/cook/${cook._id}`}>{cook.meatType}</Link></TableCell>
+                                        <TableCell><Link href={`/cook/${cook._id}`}><a className={classes.link}>{cook.meatType}</a></Link></TableCell>
                                         <TableCell>{cook.brand}</TableCell>
                                         <TableCell>{cook.rubs}</TableCell>
                                         <TableCell>{cook.woodPellets}</TableCell>
