@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, makeStyles, Typography, Button } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import Link from 'next/link';
+import { signin, signout, useSession } from 'next-auth/client';
 
 
 const useStyles = makeStyles(theme => ({
@@ -18,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 function NavBar() {
     const classes = useStyles();
+    const [session, loading] = useSession();
 
     const [loginOpen, setLoginOpen] = useState(false);
 
@@ -38,6 +40,7 @@ function NavBar() {
                         <Link href="/dashboard" passHref>
                             <Button>Dashboard</Button>
                         </Link>
+                        { !session ? <Button color="inherit" onClick={signin}>Login</Button> : <Button color="inherit" onClick={signout}>Log Out</Button> }
                     </Toolbar>
                 </AppBar>
             </header>
