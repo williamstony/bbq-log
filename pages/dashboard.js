@@ -57,9 +57,11 @@ function Dashboard({cooks}) {
             <Container>
                 <Typography variant="h3" className={classes.pageHeader}>
                     Dashboard
+                    <Link href="/cook/add" passHref>
                     <Button variant="outlined" className={classes.addCookButton}>
                         Add Cook
                     </Button>
+                    </Link>
                 </Typography>
                 <TableContainer className={classes.tableContainer} component={Paper} elevation={0}>
                         <Typography variant="h4" style={{padding: '16px'}}>
@@ -79,7 +81,7 @@ function Dashboard({cooks}) {
                                 {cooks?.map(cook => (
                                     <TableRow key={cook._id}>
                                         <TableCell component="th" scope="row">{new Intl.DateTimeFormat('en-US', { timeZone: "America/New_York" }).format(new Date(cook.date))}</TableCell>
-                                        <TableCell><Link href={`/cooks/${cook._id}`}>{cook.meatType}</Link></TableCell>
+                                        <TableCell><Link href={`/cook/${cook._id}`}>{cook.meatType}</Link></TableCell>
                                         <TableCell>{cook.brand}</TableCell>
                                         <TableCell>{cook.rubs}</TableCell>
                                         <TableCell>{cook.woodPellets}</TableCell>
