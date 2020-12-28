@@ -9,12 +9,14 @@
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "mongodb": "^3.6.3",
     "mongoose": "^5.9.13",
     "next": "^9.4.2",
     "next-auth": "^3.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "swr": "^0.3.11"
+    "swr": "^0.3.11",
+    "typeorm": "0.2.28"
   },
   "license": "MIT"
 }

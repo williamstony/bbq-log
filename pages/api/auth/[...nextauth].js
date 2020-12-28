@@ -2,7 +2,6 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
 const options = {
-  site: process.env.SITE || 'http://localhost:3000',
 
   // Configure one or more authentication providers
 
@@ -12,7 +11,13 @@ const options = {
       clientSecret: process.env.GOOGLE_SECRET,
     }),
 ],
-database: process.env.MONGO_URL,
+// database: {
+//     type: "mongodb",
+//     useNewUrlParser: true,
+//     url: process.env.MONGO_URL,
+//     ssl: true,
+//     useUnifiedTopology: true,
+//   },
 };
 
 export default (req, res) => NextAuth(req, res, options);

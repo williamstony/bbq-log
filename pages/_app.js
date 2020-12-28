@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import Link from 'next/link'
 import NavBar from '../components/NavBar'
+import { Provider } from 'next-auth/client'
 
 function MyApp({ Component, pageProps }) {
 
@@ -24,7 +25,7 @@ function MyApp({ Component, pageProps }) {
         <title>BBQ Log</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-
+      <Provider session={pageProps.session}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <div className="top-bar">
@@ -33,6 +34,7 @@ function MyApp({ Component, pageProps }) {
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
+      </Provider>
     </>
   )
 }
